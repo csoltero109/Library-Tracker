@@ -6,14 +6,14 @@
 	<title>The HTML5 Herald</title>
 	<meta name="description" content="The HTML5 Herald">
 	<meta name="csoltero109" content="SitePoint">
-	<!-- <link rel="stylesheet" href="styles.css?v=1.0"> -->
-	<script src="index.js"></script>
+	<link rel="stylesheet" href="styles.css">
+	<script type="text/javascript" src="index.js"></script>
 </head>
 <body>
   <!-- https://www.googleapis.com/books/v1/volumes/XA1evgEACAAJ -->
 	
 	ISBN: <input type="text" id="isbn" placeholder="Enter ISBN here...">
-	<button onclick="getISBN()">Submit</button>
+	<button id="submit">Submit</button>
 
 	<br>
 	<div id="title"></div>
@@ -23,5 +23,36 @@
 	<div id="isbn13"></div>
 	<a id="selflink" class="link" href=""></a>
 	<div id="nothingReturned"></div>
+	
+	<table id="bookTable">
+		<tr>
+			<th>Title</th>
+			<th>Title Cover</th> 
+			<th>Description</th>
+			<th>ISBN 10</th>
+			<th>ISBN 13</th>
+			<th>API call</th>
+		</tr>
+		<!--<tr>
+			<td>Row1 cell1</td>
+			<td>Row1 cell2</td>
+		</tr>
+		<tr>
+			<td>Row2 cell1</td>
+			<td>Row2 cell2</td>
+		</tr>
+		<tr>
+			<td>Row3 cell1</td>
+			<td>Row3 cell2</td>
+		</tr>-->
+	</table>
+	<!--<button type="button" onclick="addRow()">Try it</button>-->
+<br>
+
+	<script>
+	document.getElementById("submit").addEventListener("click", function() {
+	getISBN();
+	});
+	</script>
 </body>
 </html>
