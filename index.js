@@ -37,7 +37,7 @@ function getISBN(){
 				//var arr = determineISBNTypes(json.items[0]);
 				var book = {
 					title: json.items[0].volumeInfo.title,
-					bookImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+					bookImage: "Images/NoImageAvailable2.jpg",
 					description: json.items[0].volumeInfo.description,
 					isbn10: json.items[0].volumeInfo.industryIdentifiers[0].identifier,
 					isbn13: json.items[0].volumeInfo.industryIdentifiers[1].identifier,
