@@ -1,6 +1,8 @@
 // https://www.googleapis.com/books/v1/volumes/XA1evgEACAAJ
 // request.open("GET", "https://www.googleapis.com/books/v1/volumes?q=isbn:9781566199094");
 
+
+
 function getISBN(){
 	var isbn = document.getElementById("isbn").value;
 	var correctedISBN = cleanISBN(isbn);
@@ -53,7 +55,21 @@ function getISBN(){
 			}
 			}
 			catch(err){
+				var book = {
+					title: "Unknown",
+					bookImage: "Images/NoImageAvailable2.jpg",
+					description: "Could not find ISBN in Google database.",
+					isbn10: correctedISBN,
+					isbn13: correctedISBN,
+					authors: "Uknown",
+					selflink: "https://www.googleapis.com/books/v1/volumes?q=isbn:" + correctedISBN
+				};
+				console.log(book);
 				
+				
+				//displayInfo(book);
+				addBadRow(book);
+				//console.log(JSON.parse(request.response));
 			}
 			//document.getElementById("nothingReturned").innerHTML = "The ISBN number entered has returned nothing...";
 		}
@@ -84,14 +100,81 @@ function addRow(book) {
   var isbn10 = row.insertCell(3);
   var isbn13 = row.insertCell(4);
   var authors = row.insertCell(5);
+  var removeRow = row.insertCell(6);
+  var shortDesc = getFirstSentence(book.description);
   title.innerHTML = '<a id="' + book.isbn13 + '" class="link" href="' + book.selflink + '">' + book.title + '</a>';
   image.innerHTML = '<img style="display:block;" src="' + book.bookImage + '" />';
-  description.innerHTML = book.description;
+  description.innerHTML = '<p id="myBtn">' + shortDesc + '</p><div id="myModal" class="modal"><div class="modal-content"><span class="close">&times;</span><p>' + book.description + '</p></div></div>';
   description.style.width = '25%';
   isbn10.innerHTML = book.isbn10;
   isbn13.innerHTML = book.isbn13;
   authors.innerHTML = book.authors;
+  removeRow.innerHTML = '<input type="button" value="Delete" onclick="deleteRow(this)">';
+  var modal = document.getElementById("myModal");
+  var btn = document.getElementById("myBtn");
+  var span = document.getElementsByClassName("close")[0];
+
+
+
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 }
+
+//document.getElementById("mytable").getElementsByTagName("td");
+function addBadRow(book) {
+  var table = document.getElementById("bookTable");
+  var row = table.insertRow(1);
+  var title = row.insertCell(0);
+  var image = row.insertCell(1);
+  var description = row.insertCell(2);
+  var isbn10 = row.insertCell(3);
+  //var isbn13 = row.insertCell(4);
+  var authors = row.insertCell(5);
+  var removeRow = row.insertCell(6);
+  var shortDesc = book.description;
+  var modalDescription = "We compared the given ISBN against a Google ISBN database and came up with inconclusive results. We will provide a link under ISBN-10 and ISBN-13 sections. This will take you to another ISBN database that might display desirable results.";
+  title.innerHTML = '<a id="' + book.isbn13 + '" class="link" href="' + book.selflink + '">' + book.title + '</a>';
+  image.innerHTML = '<img style="display:block;" src="' + book.bookImage + '" />';
+  description.innerHTML = '<p id="myBtn">' + shortDesc + '</p><div id="myModal" class="modal"><div class="modal-content"><span class="close">&times;</span><p>' + book.description + '</p></div></div>';
+  description.style.width = '25%';
+  isbn10.innerHTML = '<a id="' + book.isbn10 + '" class="link" href="https://isbndb.com/book/' + book.isbn10 + '">Try ISBN-10 search</a>';
+  isbn13.innerHTML = '<a id="' + book.isbn13 + '" class="link" href="https://isbndb.com/book/' + book.isbn13 + '">Try ISBN-13 search</a>';
+  authors.innerHTML = book.authors;
+  removeRow.innerHTML = '<input type="button" value="Delete" onclick="deleteRow(this)">';
+  var modal = document.getElementById("myModal");
+  var btn = document.getElementById("myBtn");
+  var span = document.getElementsByClassName("close")[0];
+
+
+
+  btn.onclick = function() {
+    modal.style.display = "block";
+  }
+
+  span.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+}
+
+
+
 
 function determineISBNTypes(length0, length1){
 	var isbnLengths = new Array(2);
@@ -106,8 +189,21 @@ function determineISBNTypes(length0, length1){
 	return isbnLengths;
 }
 
+function getFirstSentence(paragraghDesc){
+	const regex = /.*?(\.)(?=\s[A-Z])/;
+	const str = paragraghDesc;
+	let m;
 
+	if ((m = regex.exec(str)) !== null) {
+		//console.log(m[0]);
+	}
+	return m[0];
+}
 
+function deleteRow(r) {
+  var i = r.parentNode.parentNode.rowIndex;
+  document.getElementById("bookTable").deleteRow(i);
+}
 
 
 
